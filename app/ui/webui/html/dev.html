@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Halfmoon CSS -->
+    <link rel="stylesheet" href="/css/halfmoon.min.css">
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="/css/icons.css?v=3">
+    <!-- Include SciChart.js v4 -->
+    <script src="https://cdn.jsdelivr.net/npm/scichart@4/_wasm/scichart.browser.js" crossorigin="anonymous"></script>
+    <script>
+        const currentPageId = 'dev';
+    </script>
+    <script src="/js/icons.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/navigation.js"></script>
+    <title>Simtezilo</title>
+</head>
+
+<body data-bs-theme="dark">
+    <div id="navigation"></div>
+
+    <div class="content-container">
+        <div class="container-fluid">
+            <!-- Graph Window Info -->
+            <div class="row mb-15">
+                <div class="col-md-10"></div>
+                <div class="col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-arrows-left-right-to-line"></i>
+                        </span>
+                        <input type="text" id="window-size-display" class="form-control text-center fw-bold" value="--"
+                            placeholder="e.g. 10s, 2m">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create the Div to host the SciChartSurface -->
+            <div class="row g-1">
+                <div class="col-md-6">
+                    <h5 class="mb-2 text-center" data-i18n="runmode.telemetry.chart.translationalaccel">6DOF
+                        Translational Acceleration</h5>
+                    <div id="scichart-root-1" style="height: 300px;"></div>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="mb-2 text-center" data-i18n="runmode.telemetry.chart.rotationalaccel">6DOF Rotational
+                        Acceleration</h5>
+                    <div id="scichart-root-2" style="height: 300px;"></div>
+                </div>
+            </div>
+            <div class="row g-1 mt-4">
+                <div class="col-md-6">
+                    <h5 class="mb-2 text-center" data-i18n="runmode.telemetry.chart.jerk">6DOF Jerk</h5>
+                    <div id="scichart-root-3" style="height: 300px;"></div>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="mb-2 text-center" data-i18n="runmode.telemetry.chart.snap">6DOF Snap</h5>
+                    <div id="scichart-root-4" style="height: 300px;"></div>
+                </div>
+            </div>
+            <div class="row g-1 mt-4">
+                <div class="col-md-6">
+                    <h5 class="mb-2 text-center" data-i18n="runmode.telemetry.chart.synthoutput">Synthesizer Outputs
+                    </h5>
+                    <div id="scichart-root-5" style="height: 300px;"></div>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="mb-2 text-center" data-i18n="runmode.telemetry.chart.computetime">Compute Time</h5>
+                    <div id="scichart-root-6" style="height: 300px;"></div>
+                </div>
+            </div>
+            <div class="row g-1 mt-1">
+                <div class="col-md-6">
+                    <div id="scichart-root-7" style="height: 300px;"></div>
+                </div>
+                <div class="col-md-6">
+                    <div id="scichart-root-8" style="height: 300px;"></div>
+                </div>
+            </div>
+            <div class="row g-1 mt-1">
+                <div class="col-md-6">
+                    <div id="scichart-root-9" style="height: 300px;"></div>
+                </div>
+                <div class="col-md-6">
+                    <div id="scichart-root-10" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- The JavaScript to create a SciChartSurface -->
+    <script src="/js/scichart.js" data-chart-config="dev"></script>
+
+    <script>
+        // Replace all Font Awesome icons with SVG icons
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof IconHelper !== 'undefined') {
+                // Map Font Awesome classes to SVG icon names
+                const iconMap = {
+                    'fa-arrows-left-right-to-line': 'fa-arrows-left-right-to-line'
+                };
+
+                // Find all Font Awesome icons
+                document.querySelectorAll('[class*="fa-"]').forEach(element => {
+                    // Check which icon it has
+                    for (const [faClass, iconName] of Object.entries(iconMap)) {
+                        if (element.classList.contains(faClass)) {
+                            IconHelper.replaceIcon(element, iconName);
+                            break;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+version: "2"
+
+run:
+  allow-parallel-runners: true
+
+linters:
+  default: all
+  disable:
+    - contextcheck    # TODO: enable and fix
+    - cyclop          # TODO: enable and fix
+    - dupl            # TODO: enable and fix
+    - exhaustive      # TODO: enable and fix
+    - gocognit        # TODO: enable and fix
+    - maintidx        # TODO: enable and fix
+    - nestif          # TODO: enable and fix
+    - dupword         # too noisy, little value
+    - err113          # TODO: enable and fix
+    - exhaustruct     # prefer shorter struct literals
+    - funlen          # TODO: enable and fix
+    - gocyclo         # use cyclop instead
+    - godox           # TODO: enable and fix
+    - mnd             # TODO: enable and fix
+    - nilnil          # not bothered by nil val+err
+    - nonamedreturns  # prefer named returns in some cases
+    - wrapcheck       # TODO: enable and fix or user err113 instead
+    - wsl             # use wsl_v5 instead
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+  settings:
+    depguard:
+      rules:
+        main:
+          allow:
+            - $gostd
+            - atomicgo.dev/keyboard
+            - github.com/Wifx/gonetworkmanager
+            - github.com/bwmarrin/discordgo
+            - github.com/golang/freetype
+            - github.com/gopxl/beep
+            - github.com/gorilla/websocket
+            - github.com/grafana/pyroscope-go
+            - github.com/kennygrant/sanitize
+            - github.com/rs/zerolog
+            - github.com/santhosh-tekuri/jsonschema/v5
+            - github.com/yeqown/go-qrcode
+            - github.com/skip2/go-qrcode
+            - github.com/spf13/viper
+            - github.com/stretchr/testify
+            - github.com/zetetos/simtezilo
+            - github.com/zetetos/gt-telemetry/v2
+            - golang.org/x/crypto/ssh
+            - golang.org/x/image
+            - gopkg.in/natefinch/lumberjack.v2
+            - layeh.com/gopus
+            - periph.io/x/conn/v3
+            - periph.io/x/host/v3
+    lll:
+      line-length: 180
+    gomoddirectives:
+      replace-allow-list:
+        - github.com/bwmarrin/discordgo # temporary until voice fix is merged
+    tagliatelle:
+      case:
+        rules:
+          json: camel
+
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+    # - golines # conflicts with nolintlint
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  fix: true

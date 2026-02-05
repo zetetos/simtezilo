@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  pyroscope:
+    container_name: pyroscope
+    image: grafana/pyroscope:latest
+    ports:
+      - "4040:4040"
+    volumes:
+      - "./data/persist/pyroscope:/data"
+    # profiles: ["withProfiling"]

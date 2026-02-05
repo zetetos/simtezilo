@@ -1,0 +1,19 @@
+{
+  "version": "1.2.3",
+  "releaseDate": "2026-01-11T10:30:00Z",
+  "changelog": [
+    "## Version 1.2.3",
+    "",
+    "### New Features",
+    "- Added custom update upload support",
+    "- Improved error handling",
+    "",
+    "### Bug Fixes",
+    "- Fixed telemetry connection issues",
+    "- Resolved UI rendering glitches",
+    "",
+    "### Performance",
+    "- Optimized haptics processing"
+  ],
+  "platform": "darwin-arm64"
+}

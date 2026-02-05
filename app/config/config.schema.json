@@ -1,0 +1,622 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://simtezilo.com/schemas/config/v1.0.0/config.schema.json",
+    "title": "Simtezilo Configuration",
+    "description": "Configuration schema for the Simtezilo application",
+    "type": "object",
+    "required": [
+        "schemaVersion"
+    ],
+    "properties": {
+        "schemaVersion": {
+            "type": "string",
+            "description": "Schema version this configuration complies with",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+            "const": "1.0.0"
+        },
+        "app": {
+            "type": "object",
+            "description": "Application settings",
+            "required": [
+                "language"
+            ],
+            "properties": {
+                "language": {
+                    "type": "string",
+                    "description": "Language code used for UI and pit radio messaging (ISO 639-1)",
+                    "minLength": 1,
+                    "default": "en"
+                },
+                "accent": {
+                    "type": "string",
+                    "description": "Regional code used for pit radio accent (ISO 3166-1 alpha-2)",
+                    "default": "gb"
+                },
+                "logLevel": {
+                    "type": "string",
+                    "description": "Logging level",
+                    "enum": [
+                        "trace",
+                        "debug",
+                        "info",
+                        "warn",
+                        "error",
+                        "fatal",
+                        "panic"
+                    ],
+                    "default": "info"
+                },
+                "baseDir": {
+                    "type": "string",
+                    "description": "Base directory for application data",
+                    "default": "/opt/simtezilo"
+                },
+                "vehicleDBFile": {
+                    "type": "string",
+                    "description": "Path to the vehicle database file",
+                    "default": ""
+                },
+                "enabledWebUI": {
+                    "type": "boolean",
+                    "description": "Enable the web-based user interface",
+                    "default": true
+                },
+                "webUIPort": {
+                    "type": "integer",
+                    "description": "Port number for the web UI",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "default": 80
+                },
+                "enableDevTools": {
+                    "type": "boolean",
+                    "description": "Enable developer tools",
+                    "default": false
+                }
+            },
+            "additionalProperties": true
+        },
+        "hardware": {
+            "type": "object",
+            "description": "Hardware configuration",
+            "properties": {
+                "model": {
+                    "type": "string",
+                    "enum": [
+                        "none",
+                        "console",
+                        "pirateaudio",
+                        "spotpear",
+                        "waveshare"
+                    ],
+                    "description": "Hardware model identifier"
+                },
+                "displayOrientation": {
+                    "type": "integer",
+                    "description": "Display rotation in degrees",
+                    "enum": [
+                        0,
+                        90,
+                        180,
+                        270
+                    ],
+                    "default": 0
+                }
+            },
+            "additionalProperties": true
+        },
+        "telemetry": {
+            "type": "object",
+            "description": "Telemetry source configuration",
+            "required": [
+                "source"
+            ],
+            "properties": {
+                "source": {
+                    "type": "string",
+                    "description": "Telemetry data source identifier",
+                    "minLength": 1
+                }
+            },
+            "additionalProperties": true
+        },
+        "synthesizer": {
+            "type": "object",
+            "description": "Audio synthesizer settings",
+            "properties": {
+                "masterMute": {
+                    "type": "boolean",
+                    "description": "Mute all audio output",
+                    "default": false
+                },
+                "masterGain": {
+                    "type": "number",
+                    "description": "Master volume gain in dB",
+                    "minimum": -60.0,
+                    "maximum": 0.0,
+                    "default": -7.0
+                },
+                "channelMute": {
+                    "type": "array",
+                    "description": "Per-channel mute settings",
+                    "items": {
+                        "type": "boolean"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "default": [false, false]
+                },
+                "channelGain": {
+                    "type": "array",
+                    "description": "Per-channel gain in dB",
+                    "items": {
+                        "type": "number",
+                        "minimum": -60.0,
+                        "maximum": 0.0
+                    },
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "default": [-5.5, -5.5]
+                },
+                "chassisMute": {
+                    "type": "boolean",
+                    "description": "Mute chassis audio",
+                    "default": false
+                },
+                "chassisGain": {
+                    "type": "number",
+                    "description": "Chassis audio gain in dB",
+                    "minimum": -60.0,
+                    "maximum": 0.0,
+                    "default": 0.0
+                },
+                "engineMute": {
+                    "type": "boolean",
+                    "description": "Mute engine audio",
+                    "default": false
+                },
+                "engineGain": {
+                    "type": "number",
+                    "description": "Engine audio gain in dB",
+                    "minimum": -60.0,
+                    "maximum": 0.0,
+                    "default": -3.5
+                },
+                "transmissionMute": {
+                    "type": "boolean",
+                    "description": "Mute transmission audio",
+                    "default": false
+                },
+                "transmissionGain": {
+                    "type": "number",
+                    "description": "Transmission audio gain in dB",
+                    "minimum": -60.0,
+                    "maximum": 0.0,
+                    "default": 0.0
+                },
+                "transmissionGainMinRace": {
+                    "type": "number",
+                    "description": "Minimum transmission gain for race mode in dB",
+                    "minimum": -60.0,
+                    "maximum": 0.0,
+                    "default": -4.5
+                },
+                "transmissionGainMinStreet": {
+                    "type": "number",
+                    "description": "Minimum transmission gain for street mode in dB",
+                    "minimum": -60.0,
+                    "maximum": 0.0,
+                    "default": -6.0
+                },
+                "gainIncrement": {
+                    "type": "number",
+                    "description": "Gain adjustment step size in dB",
+                    "minimum": 0.001,
+                    "maximum": 10.0,
+                    "default": 0.25
+                },
+                "engineFrequencyMin": {
+                    "type": "number",
+                    "description": "Minimum engine frequency in Hz",
+                    "minimum": 5.0,
+                    "maximum": 300.0,
+                    "default": 8.0
+                },
+                "engineFrequencyMax": {
+                    "type": "number",
+                    "description": "Maximum engine frequency in Hz",
+                    "minimum": 5.0,
+                    "maximum": 300.0,
+                    "default": 160.0
+                },
+                "internalSampleRateHz": {
+                    "type": "integer",
+                    "description": "Internal audio sample rate in Hz",
+                    "minimum": 8000,
+                    "maximum": 192000,
+                    "default": 8000
+                },
+                "outputSampleRateHz": {
+                    "type": "integer",
+                    "description": "Output audio sample rate in Hz",
+                    "minimum": 8000,
+                    "maximum": 192000,
+                    "default": 32000
+                },
+                "enableEq": {
+                    "type": "array",
+                    "description": "Per-channel EQ enable flags",
+                    "items": {
+                        "type": "boolean"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "default": [false, false]
+                },
+                "eqBands": {
+                    "type": "array",
+                    "description": "Equalizer band configurations (array of band arrays, one per channel)",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                        "type": "array",
+                        "description": "Array of 8 EQ bands for a single channel",
+                        "minItems": 8,
+                        "maxItems": 8,
+                        "items": {
+                            "$ref": "#/$defs/eqBand"
+                        }
+                    }
+                }
+            },
+            "additionalProperties": true
+        },
+        "haptics": {
+            "type": "object",
+            "description": "Haptic feedback settings",
+            "properties": {
+                "enableReplay": {
+                    "type": "boolean",
+                    "description": "Enable haptic replay",
+                    "default": false
+                },
+                "jerkCurve": {
+                    "type": "integer",
+                    "description": "Jerk response curve",
+                    "minimum": 5,
+                    "maximum": 955,
+                    "default": 190
+                },
+                "jerkMax": {
+                    "type": "integer",
+                    "description": "Maximum jerk value",
+                    "minimum": 1,
+                    "maximum": 200,
+                    "default": 37
+                },
+                "snapCurve": {
+                    "type": "integer",
+                    "description": "Snap response curve",
+                    "minimum": 5,
+                    "maximum": 955,
+                    "default": 310
+                },
+                "snapMax": {
+                    "type": "integer",
+                    "description": "Maximum snap value",
+                    "minimum": 1,
+                    "maximum": 200,
+                    "default": 90
+                },
+                "pulseMaxAmplitude": {
+                    "type": "number",
+                    "description": "Maximum pulse amplitude (0.0-1.0)",
+                    "minimum": 0.0,
+                    "maximum": 1.0,
+                    "default": 1.0
+                },
+                "pulseMinFrequencyHz": {
+                    "type": "number",
+                    "description": "Minimum pulse frequency in Hz",
+                    "minimum": 5.0,
+                    "maximum": 50.0,
+                    "default": 8.0
+                },
+                "pulseMaxFrequencyHz": {
+                    "type": "number",
+                    "description": "Maximum pulse frequency in Hz",
+                    "minimum": 20.0,
+                    "maximum": 200.0,
+                    "default": 60.0
+                },
+                "dynamicTransmissionFeedback": {
+                    "type": "boolean",
+                    "description": "Enable dynamic transmission feedback",
+                    "default": true
+                },
+                "dynamicTransmissionCurve": {
+                    "type": "integer",
+                    "description": "Dynamic transmission response curve",
+                    "minimum": 5,
+                    "maximum": 955,
+                    "default": 150
+                },
+                "dynamicTransmissionGforceMax": {
+                    "type": "number",
+                    "description": "Maximum G-force for dynamic transmission feedback",
+                    "exclusiveMinimum": 0.0,
+                    "maximum": 20.0,
+                    "default": 2.0
+                },
+                "engineProfiles": {
+                    "type": "object",
+                    "description": "Engine haptic profiles keyed by engine type",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/engineProfile"
+                    }
+                }
+            },
+            "additionalProperties": true
+        },
+        "pitRadio": {
+            "type": "object",
+            "description": "Pit radio communication settings",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable pit radio functionality",
+                    "default": false
+                },
+                "output": {
+                    "type": "string",
+                    "description": "Output destination for pit radio messages",
+                    "enum": [
+                        "log",
+                        "discord"
+                    ],
+                    "default": "log"
+                },
+                "messageSendIntervalMs": {
+                    "type": "integer",
+                    "description": "Interval between messages in milliseconds",
+                    "minimum": 0,
+                    "maximum": 60000,
+                    "default": 2000
+                },
+                "discord": {
+                    "type": "object",
+                    "description": "Discord integration settings",
+                    "properties": {
+                        "token": {
+                            "type": "string",
+                            "description": "Discord bot token",
+                            "default": ""
+                        },
+                        "guildID": {
+                            "type": "string",
+                            "description": "Discord guild (server) ID",
+                            "default": ""
+                        },
+                        "channelID": {
+                            "type": "string",
+                            "description": "Discord text channel ID",
+                            "default": ""
+                        },
+                        "voiceChannelID": {
+                            "type": "string",
+                            "description": "Discord voice channel ID",
+                            "default": ""
+                        }
+                    },
+                    "additionalProperties": true
+                },
+                "notifications": {
+                    "type": "object",
+                    "description": "Notification settings",
+                    "properties": {
+                        "enabledLapTimes": {
+                            "type": "boolean",
+                            "description": "Enable lap time notifications",
+                            "default": true
+                        },
+                        "lapTimesMaxDeltaSeconds": {
+                            "type": "number",
+                            "description": "Maximum delta in seconds for lap time notifications",
+                            "minimum": 0.0,
+                            "maximum": 60.0,
+                            "default": 2.0
+                        },
+                        "enabledRaceLaps": {
+                            "type": "boolean",
+                            "description": "Enable race lap notifications",
+                            "default": true
+                        },
+                        "raceLapsIntervalLaps": {
+                            "type": "integer",
+                            "description": "Interval in laps for race lap notifications",
+                            "minimum": 1,
+                            "maximum": 50,
+                            "default": 1
+                        },
+                        "raceLapsCountdownLaps": {
+                            "type": "integer",
+                            "description": "Number of laps for countdown notifications",
+                            "minimum": 0,
+                            "maximum": 25,
+                            "default": 3
+                        },
+                        "enabledRaceProgress": {
+                            "type": "boolean",
+                            "description": "Enable race progress notifications",
+                            "default": true
+                        },
+                        "raceProgressMinLaps": {
+                            "type": "integer",
+                            "description": "Minimum laps for race progress notifications",
+                            "minimum": 1,
+                            "maximum": 100,
+                            "default": 10
+                        },
+                        "raceProgressIntervalPc": {
+                            "type": "integer",
+                            "description": "Race progress notification interval as percentage",
+                            "minimum": 1,
+                            "maximum": 50,
+                            "default": 25
+                        },
+                        "enabledCircuitMatching": {
+                            "type": "boolean",
+                            "description": "Enable circuit matching notifications",
+                            "default": false
+                        }
+                    },
+                    "additionalProperties": true
+                },
+                "fuelMonitoring": {
+                    "type": "object",
+                    "description": "Fuel monitoring settings",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Enable fuel monitoring",
+                            "default": true
+                        },
+                        "preWarnNotifyLaps": {
+                            "type": "number",
+                            "description": "Number of laps before running out to send pre-warning",
+                            "minimum": 0.0,
+                            "maximum": 25.0,
+                            "default": 2.0
+                        },
+                        "strategyNotifyLaps": {
+                            "type": "number",
+                            "description": "Number of laps for strategy notifications",
+                            "minimum": 0.0,
+                            "maximum": 50.0,
+                            "default": 5.0
+                        },
+                        "rangeSafetyMarginLaps": {
+                            "type": "number",
+                            "description": "Safety margin in laps for fuel range calculations",
+                            "minimum": 0.0,
+                            "maximum": 25.0,
+                            "default": 0.2
+                        },
+                        "rangeSafetyMarginMetres": {
+                            "type": "number",
+                            "description": "Safety margin in metres for fuel range calculations",
+                            "minimum": 0.0,
+                            "maximum": 50000.0,
+                            "default": 750.0
+                        }
+                    },
+                    "additionalProperties": true
+                },
+                "tyreMonitoring": {
+                    "type": "object",
+                    "description": "Tyre monitoring settings",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Enable tyre monitoring",
+                            "default": true
+                        },
+                        "temperatureOptimalCelsius": {
+                            "type": "number",
+                            "description": "Optimal tyre temperature in Celsius",
+                            "minimum": 0.0,
+                            "maximum": 200.0,
+                            "default": 81.0
+                        },
+                        "temperatureOperatingWindow": {
+                            "type": "number",
+                            "description": "Operating temperature window in degrees Celsius",
+                            "minimum": 0.0,
+                            "maximum": 100.0,
+                            "default": 6.0
+                        },
+                        "temperatureMarginCelsius": {
+                            "type": "number",
+                            "description": "Temperature margin in Celsius for warnings",
+                            "minimum": 0.0,
+                            "maximum": 50.0,
+                            "default": 3.0
+                        }
+                    },
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true
+        }
+    },
+    "$defs": {
+        "eqBand": {
+            "type": "object",
+            "description": "Equalizer band configuration",
+            "properties": {
+                "frequency": {
+                    "type": "number",
+                    "description": "Center frequency in Hz",
+                    "minimum": 5.0,
+                    "maximum": 160.0
+                },
+                "gain": {
+                    "type": "number",
+                    "description": "Gain in dB",
+                    "minimum": -12.0,
+                    "maximum": 6.0
+                },
+                "q": {
+                    "type": "number",
+                    "description": "Q factor (bandwidth)",
+                    "minimum": 0.1,
+                    "maximum": 20.0
+                }
+            },
+            "required": [
+                "frequency",
+                "gain",
+                "q"
+            ],
+            "additionalProperties": true
+        },
+        "engineProfile": {
+            "type": "object",
+            "description": "Engine haptic profile",
+            "properties": {
+                "primaryBalance": {
+                    "type": "number",
+                    "description": "Primary balance factor",
+                    "minimum": 0.0,
+                    "maximum": 1.0
+                },
+                "secondaryBalance": {
+                    "type": "number",
+                    "description": "Secondary balance factor",
+                    "minimum": 0.0,
+                    "maximum": 1.0
+                },
+                "gain": {
+                    "type": "number",
+                    "description": "Profile gain in dB",
+                    "minimum": -24.0,
+                    "maximum": 0.0
+                },
+                "pulseScale": {
+                    "type": "number",
+                    "description": "Pulse interval scale factor",
+                    "minimum": 0.0,
+                    "maximum": 1.0
+                }
+            },
+            "required": [
+                "primaryBalance",
+                "secondaryBalance",
+                "gain",
+                "pulseScale"
+            ],
+            "additionalProperties": true
+        }
+    },
+    "additionalProperties": true
+}

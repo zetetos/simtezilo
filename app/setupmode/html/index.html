@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Simtezilo Setup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Halfmoon CSS -->
+    <link rel="stylesheet" href="/css/halfmoon.min.css">
+    <style>
+        .icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.125em;
+            fill: currentColor;
+        }
+
+        .icon-lg {
+            width: 1.25em;
+            height: 1.25em;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #dddddd;
+            background-color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .content-container {
+            padding: 20px;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #dddddd;
+            font-size: 2.5em;
+            margin-top: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.8));
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid #444;
+            backdrop-filter: blur(5px);
+        }
+
+        .header-section p {
+            opacity: 0.8;
+            font-size: 1.1em;
+            margin: 10px 0 0 0;
+        }
+
+        .setup-section {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.8));
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid #444;
+            backdrop-filter: blur(5px);
+        }
+
+        .setup-section h2 {
+            color: #dddddd;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #555;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #dddddd;
+        }
+
+        select,
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #555;
+            border-radius: 6px;
+            background: rgba(40, 40, 40, 0.9);
+            color: #dddddd;
+            box-sizing: border-box;
+        }
+
+        select:focus,
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #dddddd;
+            outline: none;
+        }
+
+        #network-select {
+            height: auto;
+            overflow-y: auto;
+        }
+
+        .radio-group {
+            margin: 10px 0;
+        }
+
+        .radio-group label {
+            display: inline-block;
+            margin-right: 20px;
+            font-weight: normal;
+            color: #dddddd;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+            width: auto;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            color: #888;
+            font-style: italic;
+        }
+
+        .error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #c0392b;
+            color: #e74c3c;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .static-ip-fields {
+            background: rgba(20, 20, 20, 0.5);
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .password-field-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .password-field-wrapper input {
+            padding-right: 50px !important;
+            width: 100%;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 8px;
+            width: 36px;
+            height: 36px;
+            font-size: 18px;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .password-toggle:hover {
+            color: #dddddd;
+        }
+
+        .password-toggle:focus {
+            outline: none;
+            color: #dddddd;
+        }
+
+        .button-group {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .btn-nav {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            transform: scale(1.1);
+        }
+
+        .btn-nav:disabled {
+            cursor: default;
+            opacity: 0.3;
+        }
+
+        .btn-nav svg {
+            width: 40px;
+            height: 40px;
+            fill: #aaaaaa;
+        }
+
+        .btn-nav:disabled svg {
+            fill: #555555;
+        }
+
+        .return-link {
+            color: #aaaaaa;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .return-link:hover {
+            color: #cccccc;
+            text-decoration: underline;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: 1px solid #666;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:disabled {
+            opacity: 1;
+            cursor: default;
+            transform: none;
+        }
+
+        .validation-error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #27ae60;
+            color: #2ecc71;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.8));
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #444;
+            backdrop-filter: blur(5px);
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #dddddd;
+        }
+
+        .result-box.success {
+            color: #2ecc71;
+        }
+
+        .result-box.error {
+            color: #e74c3c;
+        }
+
+        .more-info-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #aaaaaa;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .more-info-link:hover {
+            color: #dddddd;
+        }
+
+        .more-info-link .icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .error-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            color: #aaaaaa;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .network-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .network-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .network-header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .network-mode-select {
+            padding: 6px 12px;
+            font-size: 14px;
+            border: 1px solid #555;
+            border-radius: 6px;
+            background: rgba(40, 40, 40, 0.9);
+            color: #dddddd;
+            cursor: pointer;
+        }
+
+        #automatic-network-container {
+            display: block;
+        }
+
+        .network-select-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .network-select-container select {
+            width: 100%;
+            min-height: 130px;
+        }
+
+        .btn-rescan {
+            padding: 6px 12px;
+            font-size: 14px;
+            border: 1px solid #555;
+            border-radius: 6px;
+            background: rgba(40, 40, 40, 0.9);
+            cursor: pointer;
+            color: #dddddd;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-rescan .icon {
+            width: 14px;
+            height: 14px;
+        }
+
+        .btn-rescan:hover:not(:disabled) {
+            background: rgba(60, 60, 60, 0.9);
+            border-color: #777;
+        }
+
+        .btn-rescan:disabled {
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        .btn-rescan.scanning {
+            color: #888;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .header-section,
+            .setup-section {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .network-select-container {
+                flex-direction: column;
+            }
+
+            .btn-rescan {
+                width: 100%;
+            }
+        }
+
+        /* Loading indicator */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .loading-indicator {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .logo-container {
+            text-align: center;
+            padding: 30px 20px 20px;
+        }
+
+        .logo-container img {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+        }
+
+
+
+        .language-select-box {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            display: block;
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #555;
+            border-radius: 8px;
+            background: rgba(40, 40, 40, 0.9);
+            color: #dddddd;
+            box-sizing: border-box;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .language-select-box option {
+            background: rgba(40, 40, 40, 0.9);
+            color: #dddddd;
+            padding: 8px;
+        }
+
+        .language-select-box option:checked {
+            background: rgba(60, 60, 60, 0.9);
+            color: #dddddd;
+        }
+
+        .language-select-box:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .continue-button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn-continue {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+        }
+
+        .btn-continue:hover:not(:disabled) {
+            transform: scale(1.1);
+        }
+
+        .btn-continue:disabled {
+            cursor: default;
+            opacity: 0.3;
+        }
+
+        .btn-continue svg {
+            width: 40px;
+            height: 40px;
+            fill: #aaaaaa;
+        }
+
+        .btn-continue:disabled svg {
+            fill: #555555;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .language-icon {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .language-icon svg {
+            width: 48px;
+            height: 48px;
+            fill: #dddddd;
+        }
+
+        .wifi-icon {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .wifi-icon svg {
+            width: 48px;
+            height: 48px;
+            fill: #dddddd;
+        }
+
+        .result-icon {
+            text-align: center;
+            margin-bottom: 20px;
+            border: none;
+            background: none;
+        }
+
+        .result-icon svg {
+            width: 48px;
+            height: 48px;
+            fill: #dddddd;
+        }
+
+        .result-icon.success svg {
+            fill: #3498db;
+        }
+
+        .result-icon.error {
+            border: none;
+            background: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .result-icon.error svg {
+            fill: #e74c3c;
+        }
+    </style>
+</head>
+
+<body data-bs-theme="dark">
+    <div class="content-container">
+        <div class="logo-container">
+            <img src="/images/simtezilo-logo-dark.svg" alt="Simtezilo">
+        </div>
+
+        <!-- Language Selection Page -->
+        <div id="language-page">
+            <div class="language-icon">
+                <svg viewBox="0 0 640 640">
+                    <path
+                        d="M192 64C209.7 64 224 78.3 224 96L224 128L352 128C369.7 128 384 142.3 384 160C384 177.7 369.7 192 352 192L342.4 192L334 215.1C317.6 260.3 292.9 301.6 261.8 337.1C276 345.9 290.8 353.7 306.2 360.6L356.6 383L418.8 243C423.9 231.4 435.4 224 448 224C460.6 224 472.1 231.4 477.2 243L605.2 531C612.4 547.2 605.1 566.1 589 573.2C572.9 580.3 553.9 573.1 546.8 557L526.8 512L369.3 512L349.3 557C342.1 573.2 323.2 580.4 307.1 573.2C291 566 283.7 547.1 290.9 531L330.7 441.5L280.3 419.1C257.3 408.9 235.3 396.7 214.5 382.7C193.2 399.9 169.9 414.9 145 427.4L110.3 444.6C94.5 452.5 75.3 446.1 67.4 430.3C59.5 414.5 65.9 395.3 81.7 387.4L116.2 370.1C132.5 361.9 148 352.4 162.6 341.8C148.8 329.1 135.8 315.4 123.7 300.9L113.6 288.7C102.3 275.1 104.1 254.9 117.7 243.6C131.3 232.3 151.5 234.1 162.8 247.7L173 259.9C184.5 273.8 197.1 286.7 210.4 298.6C237.9 268.2 259.6 232.5 273.9 193.2L274.4 192L64.1 192C46.3 192 32 177.7 32 160C32 142.3 46.3 128 64 128L160 128L160 96C160 78.3 174.3 64 192 64zM448 334.8L397.7 448L498.3 448L448 334.8z" />
+                </svg>
+            </div>
+            <select id="language-select" class="language-select-box" size="5">
+                <!-- Languages will be populated dynamically from API -->
+            </select>
+            <div id="continue-button-container" class="continue-button-container">
+                <button type="button" id="continue-btn" class="btn-continue" disabled>
+                    <svg viewBox="0 0 512 512">
+                        <path
+                            d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM294.6 135.1l99.9 107.1c3.5 3.8 5.5 8.7 5.5 13.8s-2 10.1-5.5 13.8L294.6 376.9c-4.2 4.5-10.1 7.1-16.3 7.1C266 384 256 374 256 361.7l0-57.7-96 0c-17.7 0-32-14.3-32-32l0-32c0-17.7 14.3-32 32-32l96 0 0-57.7c0-12.3 10-22.3 22.3-22.3c6.2 0 12.1 2.6 16.3 7.1z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Network Configuration Page -->
+        <div id="network-page" class="hidden">
+            <div class="wifi-icon">
+                <svg viewBox="0 0 640 640">
+                    <path
+                        d="M320 160C229.1 160 146.8 196 86.3 254.6C73.6 266.9 53.3 266.6 41.1 253.9C28.9 241.2 29.1 220.9 41.8 208.7C113.7 138.9 211.9 96 320 96C428.1 96 526.3 138.9 598.3 208.7C611 221 611.3 241.3 599 253.9C586.7 266.5 566.4 266.9 553.8 254.6C493.2 196 410.9 160 320 160zM272 496C272 469.5 293.5 448 320 448C346.5 448 368 469.5 368 496C368 522.5 346.5 544 320 544C293.5 544 272 522.5 272 496zM200 390.2C188.3 403.5 168.1 404.7 154.8 393C141.5 381.3 140.3 361.1 152 347.8C193 301.4 253.1 272 320 272C386.9 272 447 301.4 488 347.8C499.7 361.1 498.4 381.3 485.2 393C472 404.7 451.7 403.4 440 390.2C410.6 356.9 367.8 336 320 336C272.2 336 229.4 356.9 200 390.2z" />
+                </svg>
+            </div>
+            <div class="setup-section">
+                <div class="form-group">
+                    <div class="network-header">
+                        <div class="network-header-left">
+                            <label for="network-select">Network Selection:</label>
+                            <select id="network-mode-select" class="network-mode-select">
+                                <option value="automatic">Automatic</option>
+                                <option value="manual">Manual</option>
+                            </select>
+                        </div>
+                        <div class="network-header-right">
+                            <button type="button" id="rescan-btn" class="btn-rescan" title="Rescan for networks">
+                                <svg class="icon" viewBox="0 0 512 512">
+                                    <path
+                                        d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z" />
+                                </svg>
+                                Rescan
+                            </button>
+                        </div>
+                    </div>
+                    <div id="automatic-network-container">
+                        <div class="network-select-container">
+                            <select id="network-select" size="5" disabled>
+                                <option>Loading networks...</option>
+                            </select>
+                        </div>
+                        <div id="error-message" class="error" style="display:none;"></div>
+                    </div>
+                </div>
+
+                <div id="manual-ssid-config" class="hidden">
+                    <div class="form-group">
+                        <label for="manual-ssid">Network Name (SSID)</label>
+                        <input type="text" id="manual-ssid" placeholder="Enter network SSID">
+                        <div id="manual-ssid-error" class="validation-error"></div>
+                    </div>
+                </div>
+
+                <div id="network-config">
+                    <div class="form-group" id="security-type-group">
+                        <label for="security-type">Security Type</label>
+                        <select id="security-type">
+                            <option value="none">None (Open Network)</option>
+                            <option value="wep">WEP</option>
+                            <option value="wpa">WPA</option>
+                            <option value="wpa2" selected>WPA2</option>
+                            <option value="wpa3">WPA3</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="password-group">
+                        <label for="password">Network Password</label>
+                        <div class="password-field-wrapper">
+                            <input type="password" id="password" placeholder="Enter network password">
+                            <button type="button" class="password-toggle" id="password-toggle" title="Show password">
+                                <svg class="icon" viewBox="0 0 576 512">
+                                    <path
+                                        d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="password-error" class="validation-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>IP Address Configuration</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="ip-config" value="dhcp" checked>
+                                DHCP (Automatic)
+                            </label>
+                            <label>
+                                <input type="radio" name="ip-config" value="static">
+                                Static IP
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="static-ip-config" class="hidden">
+                        <div class="static-ip-fields">
+                            <div class="form-group">
+                                <label for="ip-address">IP Address</label>
+                                <input type="text" id="ip-address" placeholder="e.g., 192.168.1.100">
+                                <div id="ip-address-error" class="validation-error"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prefix">Prefix</label>
+                                <input type="text" id="prefix" placeholder="e.g., 24">
+                                <div id="prefix-error" class="validation-error"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gateway">Gateway</label>
+                                <input type="text" id="gateway" placeholder="e.g., 192.168.1.1">
+                                <div id="gateway-error" class="validation-error"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dns">DNS Servers</label>
+                                <input type="text" id="dns" placeholder="e.g., 192.168.1.1, 1.1.1.1">
+                                <div id="dns-error" class="validation-error"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="status-message" class="success" style="display:none;"></div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <div class="navigation-buttons">
+                    <button type="button" id="back-btn" class="btn-nav">
+                        <svg viewBox="0 0 512 512">
+                            <path
+                                d="M48 256a208 208 0 1 1 416 0A208 208 0 1 1 48 256zm464 0A256 256 0 1 0 0 256a256 256 0 1 0 512 0zM217.4 376.9c4.2 4.5 10.1 7.1 16.3 7.1c12.3 0 22.3-10 22.3-22.3l0-57.7 96 0c17.7 0 32-14.3 32-32l0-32c0-17.7-14.3-32-32-32l-96 0 0-57.7c0-12.3-10-22.3-22.3-22.3c-6.2 0-12.1 2.6-16.3 7.1L117.5 242.3c-3.5 3.8-5.5 8.7-5.5 13.7s2 10.1 5.5 13.8l99.9 107.1z" />
+                        </svg>
+                    </button>
+                    <button type="button" id="save-btn" class="btn-nav" disabled>
+                        <svg viewBox="0 0 512 512">
+                            <path
+                                d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM294.6 135.1l99.9 107.1c3.5 3.8 5.5 8.7 5.5 13.8s-2 10.1-5.5 13.8L294.6 376.9c-4.2 4.5-10.1 7.1-16.3 7.1C266 384 256 374 256 361.7l0-57.7-96 0c-17.7 0-32-14.3-32-32l0-32c0-17.7 14.3-32 32-32l96 0 0-57.7c0-12.3 10-22.3 22.3-22.3c6.2 0 12.1 2.6 16.3 7.1z" />
+                        </svg>
+                    </button>
+                </div>
+                <a href="#" id="return-link" class="return-link">Return to Run Mode</a>
+            </div>
+        </div>
+
+        <!-- Confirmation Page -->
+        <div id="confirmation-page" class="hidden">
+            <div class="result-icon">
+                <svg id="confirmation-icon-svg" viewBox="0 0 640 640">
+                    <path
+                        d="M569 337C578.4 327.6 578.4 312.4 569 303.1L425 159C418.1 152.1 407.8 150.1 398.8 153.8C389.8 157.5 384 166.3 384 176L384 256L272 256C245.5 256 224 277.5 224 304L224 336C224 362.5 245.5 384 272 384L384 384L384 464C384 473.7 389.8 482.5 398.8 486.2C407.8 489.9 418.1 487.9 425 481L569 337zM224 160C241.7 160 256 145.7 256 128C256 110.3 241.7 96 224 96L160 96C107 96 64 139 64 192L64 448C64 501 107 544 160 544L224 544C241.7 544 256 529.7 256 512C256 494.3 241.7 480 224 480L160 480C142.3 480 128 465.7 128 448L128 192C128 174.3 142.3 160 160 160L224 160z" />
+                </svg>
+            </div>
+            <div class="result-box">
+                <div id="confirmation-message-text">
+                    <p>When the changes are applied the device will connect to the
+                        selected network and switch to run mode. You will need to navigate to the device's new IP
+                        address to continue with any additional setup.</p>
+                    <p>Click on the tick icon below to proceed.</p>
+                </div>
+            </div>
+            <div class="button-group">
+                <div class="navigation-buttons">
+                    <button type="button" id="confirmation-back-btn" class="btn-nav">
+                        <svg viewBox="0 0 512 512">
+                            <path
+                                d="M48 256a208 208 0 1 1 416 0A208 208 0 1 1 48 256zm464 0A256 256 0 1 0 0 256a256 256 0 1 0 512 0zM217.4 376.9c4.2 4.5 10.1 7.1 16.3 7.1c12.3 0 22.3-10 22.3-22.3l0-57.7 96 0c17.7 0 32-14.3 32-32l0-32c0-17.7-14.3-32-32-32l-96 0 0-57.7c0-12.3-10-22.3-22.3-22.3c-6.2 0-12.1 2.6-16.3 7.1L117.5 242.3c-3.5 3.8-5.5 8.7-5.5 13.7s2 10.1 5.5 13.8l99.9 107.1z" />
+                        </svg>
+                    </button>
+                    <button type="button" id="confirmation-confirm-btn" class="btn-nav">
+                        <svg viewBox="0 0 512 512">
+                            <path
+                                d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Page -->
+        <div id="result-page" class="hidden">
+            <div id="result-icon" class="result-icon">
+                <svg id="result-icon-svg" viewBox="0 0 512 512">
+                    <path d="" />
+                </svg>
+            </div>
+            <div id="result-message" class="result-box">
+                <div id="result-message-text"></div>
+                <a href="#" id="more-info-link" class="more-info-link hidden">
+                    <svg class="icon" viewBox="0 0 512 512">
+                        <path
+                            d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+                    </svg>
+                </a>
+                <div id="error-details" class="error-details hidden">
+                    <div id="error-details-text"></div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button type="button" id="result-back-btn" class="btn-nav hidden">
+                    <svg viewBox="0 0 512 512">
+                        <path
+                            d="M48 256a208 208 0 1 1 416 0A208 208 0 1 1 48 256zm464 0A256 256 0 1 0 0 256a256 256 0 1 0 512 0zM217.4 376.9c4.2 4.5 10.1 7.1 16.3 7.1c12.3 0 22.3-10 22.3-22.3l0-57.7 96 0c17.7 0 32-14.3 32-32l0-32c0-17.7-14.3-32-32-32l-96 0 0-57.7c0-12.3-10-22.3-22.3-22.3c-6.2 0-12.1 2.6-16.3 7.1L117.5 242.3c-3.5 3.8-5.5 8.7-5.5 13.7s2 10.1 5.5 13.8l99.9 107.1z" />
+                    </svg>
+                </button>
+                <button type="button" id="result-confirm-btn" class="btn-nav hidden">
+                    <svg viewBox="0 0 512 512">
+                        <path
+                            d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <script>
+            // Global i18n object to store translations
+            let i18n = null;
+            // Store language metadata including default countries
+            let languageMetadata = {};
+
+            // Detect browser language and match with available languages
+            function detectBrowserLanguage(availableLanguages) {
+                // Get browser language preferences (ordered by preference)
+                const browserLanguages = navigator.languages || [navigator.language || navigator.userLanguage || 'en'];
+
+                // Try to find exact match first (e.g., 'en-US' matches 'en-US')
+                for (const browserLang of browserLanguages) {
+                    const langCode = browserLang.toLowerCase();
+                    if (availableLanguages.includes(langCode)) {
+                        return langCode;
+                    }
+                }
+
+                // Try to find match with just the language part (e.g., 'en-US' matches 'en')
+                for (const browserLang of browserLanguages) {
+                    const langCode = browserLang.split('-')[0].toLowerCase();
+                    if (availableLanguages.includes(langCode)) {
+                        return langCode;
+                    }
+                }
+
+                // Default to English if no match found
+                return availableLanguages.includes('en') ? 'en' : availableLanguages[0];
+            }
+
+            // Load available languages from API
+            async function loadLanguages() {
+                try {
+                    const response = await fetch('/api/languages');
+                    if (!response.ok) {
+                        throw new Error('Failed to load languages');
+                    }
+                    const languages = await response.json();
+
+                    // Sort languages alphabetically by code
+                    languages.sort((a, b) => a.code.localeCompare(b.code));
+
+                    // Clear existing options
+                    languageSelect.innerHTML = '';
+
+                    // Detect browser language preference
+                    const browserLang = detectBrowserLanguage(languages.map(l => l.code));
+
+                    // Populate language select with fetched languages
+                    languages.forEach(lang => {
+                        const option = document.createElement('option');
+                        option.value = lang.code;
+                        option.textContent = lang.name;
+                        if (lang.code === browserLang) {
+                            option.selected = true;
+                        }
+                        languageSelect.appendChild(option);
+
+                        // Store language metadata including default country
+                        languageMetadata[lang.code] = {
+                            name: lang.name,
+                            defaultCountry: lang.defaultCountry
+                        };
+                    });
+
+                    // Enable continue button if a language is selected
+                    if (languageSelect.value) {
+                        continueBtn.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Error loading languages:', error);
+                    // Fallback to hardcoded English and Japanese if API fails
+                    languageSelect.innerHTML = '<option value="en">English</option><option value="ja">日本語</option>';
+                }
+            }
+
+            // Load i18n translations
+            async function loadI18n(lang = 'en') {
+                try {
+                    const response = await fetch('/api/i18n?lang=' + lang);
+                    if (!response.ok) {
+                        throw new Error('Failed to load translations');
+                    }
+                    i18n = await response.json();
+                    applyTranslations();
+                } catch (error) {
+                    console.error('Error loading i18n:', error);
+                    // Continue with hardcoded English text as fallback
+                }
+            }
+
+            // Helper function to get translation by key (supports dotted notation)
+            function t(key) {
+                if (!i18n) return '';
+                return i18n[key] || '';
+            }
+
+            // Apply translations to the page
+            function applyTranslations() {
+                if (!i18n) return;
+
+                // Network page translations
+                document.querySelector('label[for="network-select"]').textContent = t('setupmode.network.networkselection');
+                document.querySelector('#network-mode-select option[value="automatic"]').textContent = t('setupmode.network.mode.automatic');
+                document.querySelector('#network-mode-select option[value="manual"]').textContent = t('setupmode.network.mode.manual');
+
+                // Update rescan button text (preserving the icon)
+                const rescanIcon = rescanBtn.querySelector('.icon').outerHTML;
+                rescanBtn.innerHTML = rescanIcon + ' ' + t('setupmode.network.rescan');
+
+                // Manual SSID
+                document.querySelector('label[for="manual-ssid"]').textContent = t('setupmode.network.manualssid');
+                document.getElementById('manual-ssid').placeholder = t('setupmode.network.enterssid');
+
+                // Security type
+                document.querySelector('label[for="security-type"]').textContent = t('setupmode.network.securitytype');
+
+                // Password
+                document.querySelector('label[for="password"]').textContent = t('setupmode.network.password');
+                document.getElementById('password').placeholder = t('setupmode.network.enterpassword');
+                document.getElementById('password-toggle').title = t('setupmode.network.showpassword');
+
+                // IP Configuration
+                const ipConfigLabels = document.querySelectorAll('.form-group > label');
+                for (let label of ipConfigLabels) {
+                    if (label.textContent.includes('IP Address Configuration') || label.nextElementSibling?.classList.contains('radio-group')) {
+                        label.textContent = t('setupmode.network.ipconfiguration');
+                        break;
+                    }
+                }
+                document.querySelector('.radio-group label:nth-of-type(1)').innerHTML =
+                    '<input type="radio" name="ip-config" value="dhcp" checked> ' + t('setupmode.network.ipmode.dhcp');
+                document.querySelector('.radio-group label:nth-of-type(2)').innerHTML =
+                    '<input type="radio" name="ip-config" value="static"> ' + t('setupmode.network.ipmode.static');
+
+                // Re-attach event listeners to the newly created radio buttons
+                attachIpConfigListeners();
+
+                // Static IP fields
+                document.querySelector('label[for="ip-address"]').textContent = t('setupmode.network.ipaddress');
+                document.getElementById('ip-address').placeholder = t('setupmode.network.ipaddressexample') + ' 192.168.1.100';
+                document.querySelector('label[for="prefix"]').textContent = t('setupmode.network.prefix');
+                document.getElementById('prefix').placeholder = t('setupmode.network.prefixexample') + ' 24';
+                document.querySelector('label[for="gateway"]').textContent = t('setupmode.network.gateway');
+                document.getElementById('gateway').placeholder = t('setupmode.network.gatewayexample') + ' 192.168.1.1';
+                document.querySelector('label[for="dns"]').textContent = t('setupmode.network.dns');
+                document.getElementById('dns').placeholder = t('setupmode.network.dnsexample') + ' 192.168.1.1, 1.1.1.1';
+
+                // Return link
+                document.getElementById('return-link').textContent = t('setupmode.network.returntorunmode');
+            }
+
+            // Language page elements
+            const languagePage = document.getElementById('language-page');
+            const networkPage = document.getElementById('network-page');
+            const languageSelect = document.getElementById('language-select');
+            const continueBtn = document.getElementById('continue-btn');
+            const continueBtnContainer = document.getElementById('continue-button-container');
+
+            // Network page elements
+            const networkSelect = document.getElementById('network-select');
+            const networkConfig = document.getElementById('network-config');
+            const manualSsidConfig = document.getElementById('manual-ssid-config');
+            const manualSsidInput = document.getElementById('manual-ssid');
+            const staticIpConfig = document.getElementById('static-ip-config');
+            const saveBtn = document.getElementById('save-btn');
+            const backBtn = document.getElementById('back-btn');
+            const returnLink = document.getElementById('return-link');
+            const statusMessage = document.getElementById('status-message');
+            const passwordInput = document.getElementById('password');
+            const securityTypeSelect = document.getElementById('security-type');
+            const rescanBtn = document.getElementById('rescan-btn');
+            const networkModeSelect = document.getElementById('network-mode-select');
+            const automaticNetworkContainer = document.getElementById('automatic-network-container');
+
+            // Confirmation page elements
+            const confirmationPage = document.getElementById('confirmation-page');
+            const confirmationIconSvg = document.getElementById('confirmation-icon-svg');
+            const confirmationBackBtn = document.getElementById('confirmation-back-btn');
+            const confirmationConfirmBtn = document.getElementById('confirmation-confirm-btn');
+
+            // Result page elements
+            const resultPage = document.getElementById('result-page');
+            const resultIcon = document.getElementById('result-icon');
+            const resultIconSvg = document.getElementById('result-icon-svg');
+            const resultMessage = document.getElementById('result-message');
+            const resultMessageText = document.getElementById('result-message-text');
+            const resultBackBtn = document.getElementById('result-back-btn');
+            const resultConfirmBtn = document.getElementById('result-confirm-btn');
+            const moreInfoLink = document.getElementById('more-info-link');
+            const errorDetails = document.getElementById('error-details');
+            const errorDetailsText = document.getElementById('error-details-text');
+
+            // Icon SVG paths (regular/outline variants)
+            const circleCheckPath = 'M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z';
+            const circleCrossPath = 'M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-9.4-24.6 0-33.9z';
+            const rightToBracketPath = 'M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z';
+            const rightFromBracketPath = 'M569 337C578.4 327.6 578.4 312.4 569 303.1L425 159C418.1 152.1 407.8 150.1 398.8 153.8C389.8 157.5 384 166.3 384 176L384 256L272 256C245.5 256 224 277.5 224 304L224 336C224 362.5 245.5 384 272 384L384 384L384 464C384 473.7 389.8 482.5 398.8 486.2C407.8 489.9 418.1 487.9 425 481L569 337zM224 160C241.7 160 256 145.7 256 128C256 110.3 241.7 96 224 96L160 96C107 96 64 139 64 192L64 448C64 501 107 544 160 544L224 544C241.7 544 256 529.7 256 512C256 494.3 241.7 480 224 480L160 480C142.3 480 128 465.7 128 448L128 192C128 174.3 142.3 160 160 160L224 160z';
+
+            // More info link handler
+            const circlePlusIcon = '<svg class="icon" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>';
+            const circleMinusIcon = '<svg class="icon" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM184 232l144 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-144 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"/></svg>';
+
+            moreInfoLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (errorDetails.classList.contains('hidden')) {
+                    errorDetails.classList.remove('hidden');
+                    moreInfoLink.innerHTML = circleMinusIcon;
+                } else {
+                    errorDetails.classList.add('hidden');
+                    moreInfoLink.innerHTML = circlePlusIcon;
+                }
+            });
+
+            // Handle network mode selection (automatic vs manual)
+            networkModeSelect.addEventListener('change', function () {
+                const mode = networkModeSelect.value;
+                if (mode === 'automatic') {
+                    // Show network list and rescan button
+                    automaticNetworkContainer.style.display = 'block';
+                    rescanBtn.style.display = 'block';
+                    manualSsidConfig.classList.add('hidden');
+                    // Disable security type in automatic mode (determined by network)
+                    securityTypeSelect.disabled = true;
+                    // Re-enable save button logic based on network selection
+                    updateSaveButtonState();
+                } else if (mode === 'manual') {
+                    // Hide network list and rescan button, show manual input
+                    automaticNetworkContainer.style.display = 'none';
+                    rescanBtn.style.display = 'none';
+                    manualSsidConfig.classList.remove('hidden');
+                    // Enable security type in manual mode (user selects)
+                    securityTypeSelect.disabled = false;
+                    // Manual mode requires SSID input
+                    updateSaveButtonState();
+                }
+            });
+
+            // Language selection handling
+            languageSelect.addEventListener('change', function () {
+                if (languageSelect.value) {
+                    continueBtn.disabled = false;
+                } else {
+                    continueBtn.disabled = true;
+                }
+            });
+
+            // Continue button handling
+            continueBtn.addEventListener('click', async function () {
+                const selectedLanguage = languageSelect.value;
+
+                // Load the selected language
+                await loadI18n(selectedLanguage);
+
+                // Load networks after language is loaded
+                loadNetworks();
+
+                // Transition to network configuration page
+                languagePage.classList.add('hidden');
+                networkPage.classList.remove('hidden');
+
+                // Disable save button initially until form is valid
+                updateSaveButtonState();
+            });
+
+            // Back button handling
+            backBtn.addEventListener('click', function () {
+                // Return to language selection page
+                networkPage.classList.add('hidden');
+                languagePage.classList.remove('hidden');
+            });
+
+            // Result back button handling
+            resultBackBtn.addEventListener('click', function () {
+                // Return to network configuration page
+                resultPage.classList.add('hidden');
+                networkPage.classList.remove('hidden');
+            });
+
+            // Store network data with security information
+            let networksData = [];
+
+            // Track what action the confirmation page is confirming
+            let confirmationAction = 'save'; // 'save' or 'return'
+
+            // IP address validation regex
+            const ipRegex = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
+            function validateIPAddress(ip, errorElementId) {
+                const errorElement = document.getElementById(errorElementId);
+                if (!ip || ip.trim() === '') {
+                    errorElement.textContent = i18n ? t('setupmode.validation.required') : 'This field is required';
+                    return false;
+                }
+                if (!ipRegex.test(ip.trim())) {
+                    errorElement.textContent = i18n ? t('setupmode.validation.invalidip') : 'Invalid IP address format';
+                    return false;
+                }
+                errorElement.textContent = '';
+                return true;
+            }
+
+            function validateDNS(dns, errorElementId) {
+                const errorElement = document.getElementById(errorElementId);
+                if (!dns || dns.trim() === '') {
+                    errorElement.textContent = i18n ? t('setupmode.validation.required') : 'This field is required';
+                    return false;
+                }
+                const dnsServers = dns.split(',').map(s => s.trim());
+                for (let server of dnsServers) {
+                    if (!ipRegex.test(server)) {
+                        errorElement.textContent = i18n ? t('setupmode.validation.invaliddns') : 'Invalid DNS server format';
+                        return false;
+                    }
+                }
+                errorElement.textContent = '';
+                return true;
+            }
+
+            function validatePrefix(prefix, errorElementId) {
+                const errorElement = document.getElementById(errorElementId);
+                if (!prefix || prefix.trim() === '') {
+                    errorElement.textContent = i18n ? t('setupmode.validation.required') : 'This field is required';
+                    return false;
+                }
+                const prefixNum = parseInt(prefix.trim(), 10);
+                if (isNaN(prefixNum) || prefixNum < 1 || prefixNum > 30) {
+                    errorElement.textContent = i18n ? t('setupmode.validation.invalidprefix') : 'Prefix must be a number between 1 and 30';
+                    return false;
+                }
+                errorElement.textContent = '';
+                return true;
+            }
+
+            function validatePassword() {
+                const password = passwordInput.value;
+                const errorElement = document.getElementById('password-error');
+
+                // Get security type from the single security type dropdown
+                const security = securityTypeSelect.value;
+
+                // Empty password is valid only for open networks
+                if (security === 'none') {
+                    errorElement.textContent = '';
+                    return true;
+                }
+
+                // For secured networks, password is required
+                if (!password || password === '') {
+                    errorElement.textContent = i18n ? t('setupmode.validation.passwordrequired') : 'Password is required for secured networks';
+                    return false;
+                }
+
+                // WPA/WPA2/WPA3 passphrase must be 8-63 characters
+                if (password.length < 8) {
+                    errorElement.textContent = i18n ? t('setupmode.validation.passwordminlength') : 'Password must be at least 8 characters';
+                    return false;
+                }
+
+                if (password.length > 63) {
+                    errorElement.textContent = i18n ? t('setupmode.validation.passwordmaxlength') : 'Password must not exceed 63 characters';
+                    return false;
+                }
+
+                errorElement.textContent = '';
+                return true;
+            }
+
+            function validateStaticIPFields() {
+                const ipConfig = document.querySelector('input[name="ip-config"]:checked').value;
+                if (ipConfig !== 'static') {
+                    return true;
+                }
+
+                let isValid = true;
+                isValid = validateIPAddress(document.getElementById('ip-address').value, 'ip-address-error') && isValid;
+                isValid = validatePrefix(document.getElementById('prefix').value, 'prefix-error') && isValid;
+                isValid = validateIPAddress(document.getElementById('gateway').value, 'gateway-error') && isValid;
+                isValid = validateDNS(document.getElementById('dns').value, 'dns-error') && isValid;
+                return isValid;
+            }
+
+            function validateForm() {
+                const mode = networkModeSelect.value;
+
+                if (mode === 'automatic') {
+                    // In automatic mode, a network must be selected
+                    if (!networkSelect.value || networkSelect.value === '') {
+                        return false;
+                    }
+                } else if (mode === 'manual') {
+                    // In manual mode, SSID must be filled
+                    if (!manualSsidInput.value || manualSsidInput.value.trim() === '') {
+                        return false;
+                    }
+                }
+
+                let isValid = validatePassword();
+                isValid = validateStaticIPFields() && isValid;
+                return isValid;
+            }
+
+            function updateSaveButtonState() {
+                saveBtn.disabled = !validateForm();
+            }
+
+            // Add password validation on input
+            passwordInput.addEventListener('input', function () {
+                validatePassword();
+                updateSaveButtonState();
+            });
+
+            passwordInput.addEventListener('blur', function () {
+                validatePassword();
+                updateSaveButtonState();
+            });
+
+            // Add input validation on blur
+            document.getElementById('ip-address').addEventListener('blur', function () {
+                if (document.querySelector('input[name="ip-config"]:checked').value === 'static') {
+                    validateIPAddress(this.value, 'ip-address-error');
+                    updateSaveButtonState();
+                }
+            });
+
+            document.getElementById('prefix').addEventListener('blur', function () {
+                if (document.querySelector('input[name="ip-config"]:checked').value === 'static') {
+                    validatePrefix(this.value, 'prefix-error');
+                    updateSaveButtonState();
+                }
+            });
+
+            document.getElementById('gateway').addEventListener('blur', function () {
+                if (document.querySelector('input[name="ip-config"]:checked').value === 'static') {
+                    validateIPAddress(this.value, 'gateway-error');
+                    updateSaveButtonState();
+                }
+            });
+
+            document.getElementById('dns').addEventListener('blur', function () {
+                if (document.querySelector('input[name="ip-config"]:checked').value === 'static') {
+                    validateDNS(this.value, 'dns-error');
+                    updateSaveButtonState();
+                }
+            });
+
+            // Check setup status and update return link visibility
+            async function checkSetupStatus() {
+                try {
+                    const response = await fetch('/api/status');
+                    if (!response.ok) {
+                        // If status endpoint doesn't exist or fails, hide the return link
+                        returnLink.style.display = 'none';
+                        return;
+                    }
+                    const status = await response.json();
+                    // Show return link only if run mode connection is present
+                    if (status.runModePresent) {
+                        returnLink.style.display = 'block';
+                    } else {
+                        returnLink.style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Error checking setup status:', error);
+                    // Hide return link on error
+                    returnLink.style.display = 'none';
+                }
+            }
+
+            function loadNetworks() {
+                const errorDiv = document.getElementById('error-message');
+                errorDiv.style.display = 'none';
+                networkSelect.style.display = 'block';
+                networkSelect.disabled = true;
+                rescanBtn.disabled = true;
+                rescanBtn.classList.add('scanning');
+                const scanningText = i18n ? t('setupmode.network.scanning') : 'Scanning...';
+                rescanBtn.innerHTML = '<svg class="icon" viewBox="0 0 512 512"><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg> ' + scanningText;
+                const scanningForNetworks = i18n ? t('setupmode.network.scanningfornetworks') : 'Scanning for networks...';
+                networkSelect.innerHTML = '<option>' + scanningForNetworks + '</option>';
+
+                // Check setup status to determine if return link should be visible
+                checkSetupStatus();
+
+                fetch('/api/networks')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('HTTP error! status: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Networks data received:', data);
+                        console.log('Data type:', typeof data, 'Is array:', Array.isArray(data));
+
+                        // Ensure data is an array
+                        if (!Array.isArray(data)) {
+                            throw new Error('Expected array of networks, got: ' + typeof data);
+                        }
+
+                        networksData = data;
+
+                        // Remember current selection if any
+                        const currentSelection = networkSelect.value;
+
+                        networkSelect.innerHTML = '';
+
+                        // Add empty default option
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = i18n ? t('setupmode.network.selectnetwork') : '-- Select a network --';
+                        networkSelect.appendChild(defaultOption);
+
+                        data.forEach(network => {
+                            const option = document.createElement('option');
+                            option.value = network.ssid;
+                            option.textContent = network.ssid;
+                            option.dataset.security = network.security;
+                            networkSelect.appendChild(option);
+                        });
+
+                        // Restore selection if it still exists
+                        if (currentSelection && Array.from(networkSelect.options).some(opt => opt.value === currentSelection)) {
+                            networkSelect.value = currentSelection;
+                        }
+
+                        networkSelect.disabled = false;
+                        rescanBtn.disabled = false;
+                        rescanBtn.classList.remove('scanning');
+                        const rescanText = i18n ? t('setupmode.network.rescan') : 'Rescan';
+                        rescanBtn.innerHTML = '<svg class="icon" viewBox="0 0 512 512"><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg> ' + rescanText;
+                    })
+                    .catch(error => {
+                        console.error('Error loading networks:', error);
+
+                        // On error, show error message in place of network list
+                        networkSelect.style.display = 'none';
+
+                        // Show error message
+                        const errorText = i18n ? t('setupmode.network.errorloadingnetworks') : 'Error loading networks. Please try rescanning or switch to Manual mode to enter network details manually.';
+                        errorDiv.textContent = errorText;
+                        errorDiv.style.display = 'block';
+
+                        // Enable rescan button to allow retry
+                        rescanBtn.disabled = false;
+                        rescanBtn.classList.remove('scanning');
+                        const rescanText = i18n ? t('setupmode.network.rescan') : 'Rescan';
+                        rescanBtn.innerHTML = '<svg class="icon" viewBox="0 0 512 512"><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg> ' + rescanText;
+                    });
+            }
+
+            window.addEventListener('DOMContentLoaded', function () {
+                // Load available languages on page load
+                loadLanguages();
+                // Don't load i18n on initial page load - only after language selection
+                // loadNetworks() will be called when transitioning to network page
+            });
+
+            // Rescan button handler
+            rescanBtn.addEventListener('click', function () {
+                loadNetworks();
+            });
+
+            // Show network configuration when a network is selected
+            networkSelect.addEventListener('change', function () {
+                if (this.value) {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const security = selectedOption.dataset.security;
+
+                    // Set security type dropdown to match the selected network
+                    if (security) {
+                        securityTypeSelect.value = security;
+                    }
+                    // Disable security type in automatic mode (it's determined by the network)
+                    securityTypeSelect.disabled = true;
+
+                    // Hide password field for open networks
+                    const passwordGroup = document.getElementById('password-group');
+                    if (security === 'none') {
+                        passwordGroup.style.display = 'none';
+                        passwordInput.value = '';
+                    } else {
+                        passwordGroup.style.display = 'block';
+                        passwordInput.disabled = false;
+                        passwordInput.placeholder = i18n ? t('setupmode.network.enterpassword') : 'Enter network password';
+                    }
+
+                    updateSaveButtonState();
+                }
+            });
+
+            // Update password field when security type changes
+            securityTypeSelect.addEventListener('change', function () {
+                const passwordGroup = document.getElementById('password-group');
+                if (this.value === 'none') {
+                    passwordGroup.style.display = 'none';
+                    passwordInput.value = '';
+                } else {
+                    passwordGroup.style.display = 'block';
+                    passwordInput.disabled = false;
+                    passwordInput.placeholder = i18n ? t('setupmode.network.enterpassword') : 'Enter network password';
+                }
+
+                validatePassword();
+                updateSaveButtonState();
+            });
+
+            // Password toggle functionality
+            const passwordToggle = document.getElementById('password-toggle');
+            const eyeIcon = '<svg class="icon" viewBox="0 0 576 512"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>';
+            const eyeSlashIcon = '<svg class="icon" viewBox="0 0 640 512"><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z"/></svg>';
+            passwordToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const type = passwordInput.type === 'password' ? 'text' : 'password';
+                passwordInput.type = type;
+
+                // Toggle icon and title
+                if (type === 'password') {
+                    this.innerHTML = eyeIcon;
+                    this.title = i18n ? t('setupmode.network.showpassword') : 'Show password';
+                } else {
+                    this.innerHTML = eyeSlashIcon;
+                    this.title = i18n ? t('setupmode.network.hidepassword') : 'Hide password';
+                }
+            });
+
+            // Validate manual SSID input
+            manualSsidInput.addEventListener('input', function () {
+                updateSaveButtonState();
+            });
+
+            manualSsidInput.addEventListener('blur', function () {
+                const errorElement = document.getElementById('manual-ssid-error');
+                if (networkModeSelect.value === 'manual' && this.value.trim() === '') {
+                    errorElement.textContent = i18n ? t('setupmode.validation.ssidrequired') : 'SSID is required';
+                } else {
+                    errorElement.textContent = '';
+                }
+                updateSaveButtonState();
+            });
+
+            // Function to attach IP config radio button listeners
+            function attachIpConfigListeners() {
+                const ipConfigRadios = document.querySelectorAll('input[name="ip-config"]');
+                ipConfigRadios.forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        if (this.value === 'static') {
+                            staticIpConfig.classList.remove('hidden');
+                        } else {
+                            staticIpConfig.classList.add('hidden');
+                            // Clear validation errors when switching to DHCP
+                            document.getElementById('ip-address-error').textContent = '';
+                            document.getElementById('prefix-error').textContent = '';
+                            document.getElementById('gateway-error').textContent = '';
+                            document.getElementById('dns-error').textContent = '';
+                        }
+                        updateSaveButtonState();
+                    });
+                });
+            }
+
+            // Toggle static IP fields based on radio selection
+            attachIpConfigListeners();
+
+            // Save button handler - navigate to confirmation page
+            saveBtn.addEventListener('click', function () {
+                if (!validateForm()) {
+                    return;
+                }
+
+                // Set confirmation action to save configuration
+                confirmationAction = 'save';
+
+                // Update confirmation message for save action
+                const saveMessage = i18n ? t('setupmode.confirmation.savemessage') : 'When the changes are applied the device will connect to the selected network and switch to run mode. You will need to navigate to the device\'s new IP address to continue with any additional setup.';
+                const saveInstructions = i18n ? t('setupmode.confirmation.saveinstructions') : 'Click on the tick icon below to proceed.';
+                document.getElementById('confirmation-message-text').innerHTML =
+                    '<p>' + saveMessage + '</p>' +
+                    '<p>' + saveInstructions + '</p>';
+
+                // Set icon to right-from-bracket (arrow pointing right out of door)
+                confirmationIconSvg.querySelector('path').setAttribute('d', rightFromBracketPath);
+                confirmationIconSvg.setAttribute('viewBox', '0 0 640 640');
+
+                // Hide network page and show confirmation page
+                networkPage.classList.add('hidden');
+                confirmationPage.classList.remove('hidden');
+            });            // Confirmation back button - return to network page
+            confirmationBackBtn.addEventListener('click', function () {
+                confirmationPage.classList.add('hidden');
+                networkPage.classList.remove('hidden');
+            });
+
+            // Confirmation confirm button - perform the actual API call
+            confirmationConfirmBtn.addEventListener('click', function () {
+                // Check if we're returning to run mode or saving configuration
+                if (confirmationAction === 'return') {
+                    // Hide confirmation page and show result page
+                    confirmationPage.classList.add('hidden');
+                    resultPage.classList.remove('hidden');
+                    // Call the return to run mode function
+                    returnToRunMode();
+                    return;
+                }
+
+                // Otherwise, we're saving configuration
+                // Disable the confirm button and show loading state
+                confirmationConfirmBtn.disabled = true;
+                confirmationConfirmBtn.innerHTML = '<svg class="icon" style="animation: spin 1s linear infinite;" viewBox="0 0 512 512"><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>';
+
+                // Add spinner animation if not already defined
+                if (!document.getElementById('spinner-style')) {
+                    const style = document.createElement('style');
+                    style.id = 'spinner-style';
+                    style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+                    document.head.appendChild(style);
+                }
+
+                // Get SSID based on mode
+                const mode = networkModeSelect.value;
+                const ssid = mode === 'manual' ? manualSsidInput.value.trim() : networkSelect.value;
+
+                // Get security type from the security type dropdown (same for both modes)
+                const security = securityTypeSelect.value;
+
+                // Get selected language and its default country
+                const selectedLanguage = languageSelect.value;
+                const defaultCountry = languageMetadata[selectedLanguage]?.defaultCountry || '';
+
+                const formData = new FormData();
+                formData.append('ssid', ssid);
+                formData.append('password', document.getElementById('password').value);
+                formData.append('security', security);
+                formData.append('method', document.querySelector('input[name="ip-config"]:checked').value);
+                formData.append('ipAddress', document.getElementById('ip-address').value);
+                formData.append('prefix', document.getElementById('prefix').value);
+                formData.append('gateway', document.getElementById('gateway').value);
+                formData.append('dns', document.getElementById('dns').value);
+                formData.append('language', selectedLanguage);
+                formData.append('accent', defaultCountry);
+
+                fetch('/api/config/save', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Hide confirmation page
+                        confirmationPage.classList.add('hidden');
+
+                        // Show result page
+                        resultPage.classList.remove('hidden');
+
+                        if (data.success) {
+                            // Success message - don't take action yet, let user read the message
+                            const successMessage = i18n ? t('setupmode.result.success') : 'Configuration verified successfully! Device is now connected to your network. Click the check button below when ready to return to run mode.';
+                            resultMessageText.textContent = successMessage;
+                            resultMessage.className = 'result-box success';
+                            resultIcon.className = 'result-icon success';
+                            resultIconSvg.querySelector('path').setAttribute('d', circleCheckPath);
+                            // Hide back button and more info link, show confirm button
+                            resultBackBtn.classList.add('hidden');
+                            resultConfirmBtn.classList.remove('hidden');
+                            moreInfoLink.classList.add('hidden');
+                            errorDetails.classList.add('hidden');
+                        } else {
+                            // Error message - show generic message with details hidden
+                            const errorMessage = i18n ? t('setupmode.result.error') : 'Oops, something went wrong.';
+                            resultMessageText.textContent = errorMessage;
+                            resultMessage.className = 'result-box error';
+                            resultIcon.className = 'result-icon error';
+                            resultIconSvg.querySelector('path').setAttribute('d', circleCrossPath);
+                            // Store full error in details section
+                            errorDetailsText.textContent = data.error || 'Unknown error occurred';
+                            errorDetails.classList.add('hidden');
+                            // Show back button and more info link on error
+                            resultBackBtn.classList.remove('hidden');
+                            moreInfoLink.classList.remove('hidden');
+                            moreInfoLink.innerHTML = circlePlusIcon;
+                        }
+
+                        // Reset confirm button
+                        confirmationConfirmBtn.disabled = false;
+                        confirmationConfirmBtn.innerHTML = '<svg viewBox="0 0 512 512"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>';
+                    })
+                    .catch(error => {
+                        // Hide confirmation page
+                        confirmationPage.classList.add('hidden');
+
+                        // Show result page with error
+                        resultPage.classList.remove('hidden');
+                        const errorMessage = i18n ? t('setupmode.result.error') : 'Oops, something went wrong.';
+                        resultMessageText.textContent = errorMessage;
+                        resultMessage.className = 'result-box error';
+                        resultIcon.className = 'result-icon error';
+                        resultIconSvg.querySelector('path').setAttribute('d', circleCrossPath);
+                        // Store full error in details section
+                        const networkErrorPrefix = i18n ? t('setupmode.result.networkerror').replace('{error}', '') : 'Network error: ';
+                        errorDetailsText.textContent = networkErrorPrefix + error.message;
+                        errorDetails.classList.add('hidden');
+                        // Show back button and more info link on error
+                        resultBackBtn.classList.remove('hidden');
+                        moreInfoLink.classList.remove('hidden');
+                        moreInfoLink.innerHTML = circlePlusIcon;
+
+                        // Reset confirm button
+                        confirmationConfirmBtn.disabled = false;
+                        confirmationConfirmBtn.innerHTML = '<svg viewBox="0 0 512 512"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>';
+                    });
+            });
+
+            // Function to return to run mode
+            function returnToRunMode() {
+                // Show return to run mode message
+                const returningMessage = i18n ? t('setupmode.result.returning') : 'Returning to Run Mode.';
+                resultMessageText.textContent = returningMessage;
+                resultMessage.className = 'result-box';
+                resultIcon.className = 'result-icon success';
+                resultIconSvg.querySelector('path').setAttribute('d', rightToBracketPath);
+
+                // Hide both buttons and more info link
+                resultBackBtn.classList.add('hidden');
+                resultConfirmBtn.classList.add('hidden');
+                moreInfoLink.classList.add('hidden');
+                errorDetails.classList.add('hidden');
+
+                fetch('/api/mode/run', {
+                    method: 'POST'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            // Show error if API fails
+                            const errorMessage = i18n ? t('setupmode.result.error') : 'Oops, something went wrong.';
+                            resultMessageText.textContent = errorMessage;
+                            resultMessage.className = 'result-box error';
+                            resultIcon.className = 'result-icon error';
+                            resultIconSvg.querySelector('path').setAttribute('d', circleCrossPath);
+                            errorDetailsText.textContent = data.error || 'Unknown error occurred';
+                            errorDetails.classList.add('hidden');
+                            resultBackBtn.classList.remove('hidden');
+                            moreInfoLink.classList.remove('hidden');
+                            moreInfoLink.innerHTML = circlePlusIcon;
+                        }
+                    })
+                    .catch(error => {
+                        // Show error on network failure
+                        const errorMessage = i18n ? t('setupmode.result.error') : 'Oops, something went wrong.';
+                        resultMessageText.textContent = errorMessage;
+                        resultMessage.className = 'result-box error';
+                        resultIcon.className = 'result-icon error';
+                        resultIconSvg.querySelector('path').setAttribute('d', circleCrossPath);
+                        const networkErrorPrefix = i18n ? t('setupmode.result.networkerror').replace('{error}', '') : 'Network error: ';
+                        errorDetailsText.textContent = networkErrorPrefix + error.message;
+                        errorDetails.classList.add('hidden');
+                        resultBackBtn.classList.remove('hidden');
+                        moreInfoLink.classList.remove('hidden');
+                        moreInfoLink.innerHTML = circlePlusIcon;
+                    });
+            }
+
+            // Confirm button handler (for successful configuration)
+            resultConfirmBtn.addEventListener('click', function () {
+                returnToRunMode();
+            });
+
+            // Return to run mode link handler
+            returnLink.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Set confirmation action to return to run mode
+                confirmationAction = 'return';
+
+                // Update confirmation message for return action
+                const returnMessage = i18n ? t('setupmode.confirmation.returnmessage') : 'Are you sure you want to return to Run Mode without applying any network configuration changes?';
+                const returnInstructions = i18n ? t('setupmode.confirmation.returninstructions') : 'When you are ready to proceed click on the tick icon below.';
+                document.getElementById('confirmation-message-text').innerHTML =
+                    '<p>' + returnMessage + '</p>' +
+                    '<p>' + returnInstructions + '</p>';
+
+                // Set icon to right-to-bracket (arrow pointing right into door)
+                confirmationIconSvg.querySelector('path').setAttribute('d', rightToBracketPath);
+                confirmationIconSvg.setAttribute('viewBox', '0 0 512 512');
+
+                // Hide network page and show confirmation page
+                networkPage.classList.add('hidden');
+                confirmationPage.classList.remove('hidden');
+            });
+
+
+        </script>
+
+        <!-- Bootstrap Bundle JS -->
+        <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
