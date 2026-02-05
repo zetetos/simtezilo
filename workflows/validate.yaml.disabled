@@ -1,0 +1,45 @@
+name: Run Tests
+on: [push, workflow_dispatch]
+
+jobs:
+  qualitycheck:
+    name: Quality Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+          check-latest: true
+      - name: Lint code
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: "v2.4.0"
+          args: --verbose
+      - name: Audit code
+        run: |
+          make audit
+
+  test:
+    name: Test
+    needs: qualitycheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+          check-latest: true
+      - name: Run tests
+        run: make test
+      - name: Generate coverage report
+        run: make test/cover
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5.0.6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: vwhitteron/simtezilo-dev

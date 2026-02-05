@@ -1,0 +1,51 @@
+name: Run Tests
+on: [push, workflow_dispatch]
+
+jobs:
+  qualitycheck:
+    name: Quality Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install ALSA development libraries
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+          check-latest: true
+      - name: Lint code
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: "v2.8.0"
+          args: --verbose
+      - name: Audit code
+        run: |
+          make audit
+
+  test:
+    name: Test
+    needs: qualitycheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install ALSA development libraries
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+          check-latest: true
+      - name: Run tests
+        run: make test
+      - name: Generate coverage report
+        run: make test/cover
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          slug: zetetos/simtezilo
+          files: out/coverage.out
+          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}

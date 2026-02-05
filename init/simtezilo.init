@@ -1,0 +1,48 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides: simtezilo
+# Required-Start:    $all
+# Required-Stop: 
+# Default-Start:     3 
+# Default-Stop:      6
+# Short-Description: Sim racing telemetry signal processing client
+### END INIT INFO
+
+
+start() {
+    echo "Starting Simtezilo"
+    /home/admin/simtezilo-linux-arm-6 &
+    return
+}
+
+
+stop() {
+    echo "Stopping Simtezilo"
+    killall simtezilo-linux-arm-6
+    return
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        echo "Unsupported"
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    reload)
+       echo "Unsupported"
+       ;;
+    *)
+       echo "Usage:  {start|stop|status|reload|restart}"
+       exit 1
+       ;;
+esac
+
+exit $?
